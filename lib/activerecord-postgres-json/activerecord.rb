@@ -13,6 +13,20 @@ module ActiveRecord
       end
 
       alias_method_chain :simplified_type, :json
+
+      class << self
+        def extract_value_from_default_with_json(default)
+          case default
+          when "'{}'::json"
+            {}
+          when "'[]'::json"
+            []
+          else
+            extract_value_from_default_without_json(default)
+          end
+        end
+        alias_method_chain :extract_value_from_default, :json
+      end
     end
   end
 
