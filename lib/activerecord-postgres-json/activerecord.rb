@@ -18,9 +18,9 @@ module ActiveRecord
         def extract_value_from_default_with_json(default)
           case default
           when "'{}'::json"
-            {}
+            '{}'
           when "'[]'::json"
-            []
+            '[]'
           else
             extract_value_from_default_without_json(default)
           end
@@ -28,37 +28,36 @@ module ActiveRecord
         alias_method_chain :extract_value_from_default, :json
       end
     end
-  end
 
-  class TableDefinition
+    class TableDefinition
 
-    # Adds json type for migrations. So you can add columns to a table like:
-    #   create_table :people do |t|
-    #     ...
-    #     t.json :info
-    #     ...
-    #   end
-    def json(*args)
-      options = args.extract_options!
-      column_names = args
-      column_names.each { |name| column(name, 'json', options) }
+      # Adds json type for migrations. So you can add columns to a table like:
+      #   create_table :people do |t|
+      #     ...
+      #     t.json :info
+      #     ...
+      #   end
+      def json(*args)
+        options = args.extract_options!
+        column_names = args
+        column_names.each { |name| column(name, 'json', options) }
+      end
+
     end
 
-  end
+    class Table
 
-  class Table
-
-    # Adds json type for migrations. So you can add columns to a table like:
-    #   change_table :people do |t|
-    #     ...
-    #     t.json :info
-    #     ...
-    #   end
-    def json(*args)
-      options = args.extract_options!
-      column_names = args
-      column_names.each { |name| column(name, 'json', options) }
+      # Adds json type for migrations. So you can add columns to a table like:
+      #   change_table :people do |t|
+      #     ...
+      #     t.json :info
+      #     ...
+      #   end
+      def json(*args)
+        options = args.extract_options!
+        column_names = args
+        column_names.each { |name| column(name, 'json', options) }
+      end
     end
   end
-
 end
