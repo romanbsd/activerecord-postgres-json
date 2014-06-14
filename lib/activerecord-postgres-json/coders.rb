@@ -29,10 +29,21 @@ module ActiveRecord
         MultiJson.dump(obj)
       end
 
-      # FIXME: support arrays
       def from_json(json)
-        Hashie::Mash.new MultiJson.load(json)
+        convert_object MultiJson.load(json)
       end
+
+      def convert_object(obj)
+        case obj
+        when Array
+          obj.map { |member| convert_object(member) }
+        when Hash
+          Hashie::Mash.new(obj)
+        else
+          obj
+        end
+      end
+
     end
   end
 end
