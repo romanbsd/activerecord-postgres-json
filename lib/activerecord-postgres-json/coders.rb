@@ -37,8 +37,6 @@ module ActiveRecord
         case obj
         when Array
           obj.map { |member| convert_object(member) }
-        when Hash
-          Hashie::Mash.new(obj)
         else
           obj
         end
