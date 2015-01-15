@@ -2,6 +2,8 @@
 coverage
 coverage.data
 
+Gemfile.lock
+
 # rdoc generated
 rdoc
 
@@ -14,6 +16,9 @@ doc
 
 # jeweler generated
 pkg
+
+# For idea:
+.idea
 
 # Have editor/IDE/OS specific files you need to ignore? Consider using a global gitignore:
 #

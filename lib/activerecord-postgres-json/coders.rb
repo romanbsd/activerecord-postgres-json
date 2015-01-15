@@ -1,5 +1,4 @@
 require 'multi_json'
-require 'hashie'
 
 module ActiveRecord
   module Coders
@@ -12,12 +11,19 @@ module ActiveRecord
         new.dump(json)
       end
 
-      def initialize(default = Hashie::Mash.new)
-        @default = default
+      def initialize(params = {})
+        @default = {}
+        return unless params.class.name == 'Hash'
+        @default   = params[:default] if params[:default]
+        @symbolize_keys = params[:symbolize_keys] if params[:symbolize_keys]
       end
 
       def dump(obj)
-        obj.nil? ? (@default.nil? ? nil : to_json(@default)) : to_json(obj)
+        if obj.nil?
+          @default.nil? ? nil : to_json(@default)
+        else
+          to_json(obj)
+        end
       end
 
       def load(json)
@@ -25,12 +31,13 @@ module ActiveRecord
       end
 
       private
+
       def to_json(obj)
         MultiJson.dump(obj)
       end
 
       def from_json(json)
-        convert_object MultiJson.load(json)
+        convert_object MultiJson.load(json, symbolize_keys: @symbolize_keys)
       end
 
       def convert_object(obj)
@@ -41,7 +48,6 @@ module ActiveRecord
           obj
         end
       end
-
     end
   end
 end
