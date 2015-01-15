@@ -1,19 +1,20 @@
 # activerecord-postgres-json
 
-A minimal JSON column type support for ActiveRecord 3.2.x
+A minimal JSON/JSONB column type support for ActiveRecord 3.2.x
 This gem adds the following support:
 
-1. Using json column type in migrations, e.g. `add_column :foo, :bar, :json`
+1. Using json/jsonb column type in migrations, e.g. `add_column :foo, :bar, :json` or `add_column :foo, :bar, :jsonb`
 2. json field support in the schema definitions
 3. JSON coder for using with the `serialize` class method:
 
 ```ruby
 class User < ActiveRecord::Base
   serialize :settings, ActiveRecord::Coders::JSON
+  serialize :settings, ActiveRecord::Coders::JSON.new(symbolize_keys: true) # for symbolize keys
 end
 
-User.first.settings.class # => Hashie::Mash
-User.first.settings.show_popups # => true
+User.first.settings.class # => Hash
+User.first.settings[:show_popups] # => true
 ...
 ```
 
