@@ -11,7 +11,7 @@ rescue Exception => e
   begin
     ActiveRecord::Base.establish_connection(db_config['test'].merge('database' => 'postgres', 'schema_search_path' => 'public'))
     ActiveRecord::Base.connection.create_database(db_config['test']['database'], db_config['test'].merge('encoding' => encoding))
-    ActiveRecord::Base.establish_connection(config)
+    ActiveRecord::Base.establish_connection(db_config['test'])
   rescue Exception => ec
     $stderr.puts ec, *(ec.backtrace)
     $stderr.puts "Couldn't create database for #{db_config['test'].inspect}"
