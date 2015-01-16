@@ -9,43 +9,31 @@ module ActiveRecord
     class PostgreSQLColumn < Column
       # Adds the json type for the column.
       def simplified_type_with_json(field_type)
-        return :json  if field_type == 'json'
-        simplified_type_without_json(field_type)
-      end
-
-      # Adds the json type for the column.
-      def simplified_type_with_jsonb(field_type)
-        return :jsonb if field_type == 'jsonb'
-        simplified_type_without_jsonb(field_type)
+        case field_type
+        when 'json'
+          :json
+        when 'jsonb'
+          :jsonb
+        else
+          simplified_type_without_json(field_type)
+        end
       end
 
       alias_method_chain :simplified_type, :json
-      alias_method_chain :simplified_type, :jsonb
 
       class << self
         def extract_value_from_default_with_json(default)
           case default
-          when "'{}'::json"
+          when "'{}'::json", "'{}'::jsonb"
             '{}'
-          when "'[]'::json"
+          when "'[]'::json", "'[]'::jsonb"
             '[]'
           else
             extract_value_from_default_without_json(default)
           end
         end
 
-        def extract_value_from_default_with_jsonb(default)
-          case default
-          when "'{}'::jsonb"
-            '{}'
-          when "'[]'::jsonb"
-            '[]'
-          else
-            extract_value_from_default_without_jsonb(default)
-          end
-        end
         alias_method_chain :extract_value_from_default, :json
-        alias_method_chain :extract_value_from_default, :jsonb
       end
     end
 
