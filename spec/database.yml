@@ -1,0 +1,4 @@
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: ar_postgres_json_test
