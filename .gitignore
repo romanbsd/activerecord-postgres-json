@@ -52,3 +52,6 @@ pkg
 
 # For rubinius:
 #*.rbc
+
+# For ruby-version
+.ruby-version
