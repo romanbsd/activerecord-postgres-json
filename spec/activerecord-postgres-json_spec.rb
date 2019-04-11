@@ -31,7 +31,7 @@ describe 'ActiverecordPostgresJson', db: true do
         data ->> 'title'            AS title,
         data #>> '{author,name}'    AS author_name,
         data #>> '{author,email}'   AS author_email,
-        (data ->> 'tags')::json     AS tags,
+        (data ->> 'tags')::jsonb     AS tags,
         (data ->> 'draft')::boolean AS draft
       FROM posts
     SQL

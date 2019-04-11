@@ -1,5 +1,6 @@
 require 'logger'
 require 'pg'
+require 'yaml'
 
 db_config = YAML.load_file(File.expand_path('../../database.yml', __FILE__))
 
