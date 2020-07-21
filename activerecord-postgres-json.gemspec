@@ -6,12 +6,12 @@
 
 Gem::Specification.new do |s|
   s.name = "activerecord-postgres-json".freeze
-  s.version = "0.2.1"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["Roman Shterenzon".freeze]
-  s.date = "2019-02-07"
+  s.date = "2020-07-21"
   s.description = "Active Record support for PostgreSQL JSON type".freeze
   s.email = "romanbsd@yahoo.com".freeze
   s.extra_rdoc_files = [
@@ -39,39 +39,36 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "http://github.com/romanbsd/activerecord-postgres-json".freeze
   s.licenses = ["MIT".freeze]
-  s.rubygems_version = "2.7.6".freeze
+  s.rubygems_version = "3.0.8".freeze
   s.summary = "Active Record support for PostgreSQL JSON type".freeze
 
-  if s.respond_to? :specification_version then
+  if s.respond_to? :specification_version
     s.specification_version = 4
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<activerecord>.freeze, ["< 4.2", ">= 3.2"])
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0')
+      s.add_runtime_dependency(%q<activerecord>.freeze, [">= 3.2", "< 4.2"])
       s.add_runtime_dependency(%q<multi_json>.freeze, [">= 0"])
-      s.add_runtime_dependency(%q<rake>.freeze, ["< 11.0"])
-      s.add_development_dependency(%q<rspec>.freeze, ["~> 2.0"])
-      s.add_development_dependency(%q<pg>.freeze, [">= 0"])
+      s.add_development_dependency(%q<rspec>.freeze, [">= 0"])
+      s.add_development_dependency(%q<pg>.freeze, ["~> 0.20.0"])
       s.add_development_dependency(%q<rubocop>.freeze, [">= 0"])
       s.add_development_dependency(%q<rdoc>.freeze, [">= 0"])
       s.add_development_dependency(%q<bundler>.freeze, [">= 0"])
       s.add_development_dependency(%q<jeweler>.freeze, [">= 0"])
     else
-      s.add_dependency(%q<activerecord>.freeze, ["< 4.2", ">= 3.2"])
+      s.add_dependency(%q<activerecord>.freeze, [">= 3.2", "< 4.2"])
       s.add_dependency(%q<multi_json>.freeze, [">= 0"])
-      s.add_dependency(%q<rake>.freeze, ["< 11.0"])
-      s.add_dependency(%q<rspec>.freeze, ["~> 2.0"])
-      s.add_dependency(%q<pg>.freeze, [">= 0"])
+      s.add_dependency(%q<rspec>.freeze, [">= 0"])
+      s.add_dependency(%q<pg>.freeze, ["~> 0.20.0"])
       s.add_dependency(%q<rubocop>.freeze, [">= 0"])
       s.add_dependency(%q<rdoc>.freeze, [">= 0"])
       s.add_dependency(%q<bundler>.freeze, [">= 0"])
       s.add_dependency(%q<jeweler>.freeze, [">= 0"])
     end
   else
-    s.add_dependency(%q<activerecord>.freeze, ["< 4.2", ">= 3.2"])
+    s.add_dependency(%q<activerecord>.freeze, [">= 3.2", "< 4.2"])
     s.add_dependency(%q<multi_json>.freeze, [">= 0"])
-    s.add_dependency(%q<rake>.freeze, ["< 11.0"])
-    s.add_dependency(%q<rspec>.freeze, ["~> 2.0"])
-    s.add_dependency(%q<pg>.freeze, [">= 0"])
+    s.add_dependency(%q<rspec>.freeze, [">= 0"])
+    s.add_dependency(%q<pg>.freeze, ["~> 0.20.0"])
     s.add_dependency(%q<rubocop>.freeze, [">= 0"])
     s.add_dependency(%q<rdoc>.freeze, [">= 0"])
     s.add_dependency(%q<bundler>.freeze, [">= 0"])
