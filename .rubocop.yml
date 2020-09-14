@@ -4,7 +4,7 @@ LineLength:
 HashSyntax:
   EnforcedStyle: ruby19
 
-SingleSpaceBeforeFirstArg:
+Layout/SpaceBeforeFirstArg:
   Enabled: false
 
 Metrics/AbcSize:
@@ -19,8 +19,9 @@ Metrics/ClassLength:
 Metrics/MethodLength:
   Max: 20
 
-TrailingComma:
+Naming/FileName:
   Enabled: false
+
 AllCops:
   Exclude:
     - '**/*.gemspec'

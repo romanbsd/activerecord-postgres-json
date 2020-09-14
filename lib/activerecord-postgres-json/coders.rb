@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'multi_json'
 
 module ActiveRecord
@@ -14,7 +16,8 @@ module ActiveRecord
       def initialize(params = {})
         @default = {}
         return unless params.class.name == 'Hash'
-        @default   = params[:default] if params[:default]
+
+        @default = params[:default] if params[:default]
         @symbolize_keys = params[:symbolize_keys] if params[:symbolize_keys]
       end
 

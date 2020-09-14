@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_record'
 require 'active_record/connection_adapters/postgresql_adapter'
 
@@ -6,7 +8,7 @@ module ActiveRecord
     PostgreSQLAdapter::NATIVE_DATABASE_TYPES[:json]  = { name: 'json' }
     PostgreSQLAdapter::NATIVE_DATABASE_TYPES[:jsonb] = { name: 'jsonb' }
 
-    if ::ActiveRecord.version >= Gem::Version.new("4.0.0")
+    if ::ActiveRecord.version >= Gem::Version.new('4.0.0')
       # As suggested here: http://www.innovationontherun.com/fixing-unknown-oid-geography-errors-with-postgis-and-rails-4-0/
       # to prevent the Rails 4.0/4.1 error of
       # "unknown OID: {field}"
