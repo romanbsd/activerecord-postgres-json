@@ -10,36 +10,11 @@ class PostQuestions < ActiveRecord::Base
 end
 
 describe 'ActiverecordPostgresJson', db: true do
-  before(:all) do
-    ActiveRecord::Schema.define do
-      create_table :posts, force: true do |t|
-        t.column :data, :jsonb
-      end
-    end
-
-    Post.reset_column_information
-
-    ActiveRecord::Base.connection.execute <<-SQL
-      CREATE INDEX index_posts_data_gin ON posts
-      USING  gin (data);
-    SQL
-
-    ActiveRecord::Base.connection.execute <<-SQL
-      CREATE OR REPLACE VIEW post_questions as
-      SELECT
-        id,
-        data ->> 'title'            AS title,
-        data #>> '{author,name}'    AS author_name,
-        data #>> '{author,email}'   AS author_email,
-        (data ->> 'tags')::jsonb     AS tags,
-        (data ->> 'draft')::boolean AS draft
-      FROM posts
-    SQL
-  end
-
   after(:all) do
-    ActiveRecord::Base.connection.execute 'DROP INDEX IF EXISTS index_posts_data_gin'
-    ActiveRecord::Base.connection.execute 'DROP VIEW IF EXISTS post_questions'
+    db_config = YAML.load_file(File.expand_path('../database.yml', __FILE__))
+    ActiveRecord::Base.connection.execute "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'mydb'"
+    ActiveRecord::Base.establish_connection(db_config['test'].merge('database' => 'postgres', 'schema_search_path' => 'public'))
+    ActiveRecord::Base.connection.execute 'DROP DATABASE IF EXISTS ar_postgres_json_test'
   end
 
   before { Post.delete_all }
