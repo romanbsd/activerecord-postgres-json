@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["Roman Shterenzon".freeze]
-  s.date = "2020-09-14"
+  s.date = "2020-09-15"
   s.description = "Active Record support for PostgreSQL JSON type".freeze
   s.email = "romanbsd@yahoo.com".freeze
   s.extra_rdoc_files = [
@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "http://github.com/romanbsd/activerecord-postgres-json".freeze
   s.licenses = ["MIT".freeze]
-  s.rubygems_version = "3.1.4".freeze
+  s.rubygems_version = "3.1.2".freeze
   s.summary = "Active Record support for PostgreSQL JSON type".freeze
 
   if s.respond_to? :specification_version then
@@ -67,3 +67,4 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rubocop>.freeze, [">= 0"])
   end
 end
+
