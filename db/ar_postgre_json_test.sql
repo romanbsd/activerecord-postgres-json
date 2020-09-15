@@ -13,6 +13,7 @@ SET default_tablespace = '';
 
 CREATE TABLE public.posts (
     id integer NOT NULL,
+    old_data json,
     data jsonb
 );
 

@@ -5,15 +5,20 @@ require 'active_record/connection_adapters/postgresql_adapter'
 
 module ActiveRecord
   module ConnectionAdapters
-    PostgreSQLAdapter::NATIVE_DATABASE_TYPES[:json]  = { name: 'json' }
+    # jsonb type isn't known by Rails 3.2.x, 4.0.x and 4.1.x, so the gem is defining it
     PostgreSQLAdapter::NATIVE_DATABASE_TYPES[:jsonb] = { name: 'jsonb' }
 
-    if ::ActiveRecord.version >= Gem::Version.new('4.0.0')
-      # As suggested here: http://www.innovationontherun.com/fixing-unknown-oid-geography-errors-with-postgis-and-rails-4-0/
-      # to prevent the Rails 4.0/4.1 error of
-      # "unknown OID: {field}"
-      PostgreSQLAdapter::OID.register_type('json', PostgreSQLAdapter::OID::Identity.new)
-      PostgreSQLAdapter::OID.register_type('jsonb', PostgreSQLAdapter::OID::Identity.new)
+    if ActiveRecord.respond_to?(:version)
+      if ::ActiveRecord.version >= Gem::Version.new('4.0.0') && ::ActiveRecord.version < Gem::Version.new('4.2.0')
+        # As suggested here:
+        # http://www.innovationontherun.com/fixing-unknown-oid-geography-errors-with-postgis-and-rails-4-0/
+        # to prevent the Rails 4.0/4.1 error of "unknown OID: {field}"
+        PostgreSQLAdapter::OID.register_type('jsonb', PostgreSQLAdapter::OID::Identity.new)
+      end
+    elsif ActiveRecord::VERSION::MAJOR == 3 && ActiveRecord::VERSION::MINOR == 2
+      # json type isn't known by Rails 3.2.x, so the gem is defining it.
+      # Rails 4.0.x and 4.1.x already have it defined
+      PostgreSQLAdapter::NATIVE_DATABASE_TYPES[:json]  = { name: 'json' }
     end
 
     class PostgreSQLColumn < Column
