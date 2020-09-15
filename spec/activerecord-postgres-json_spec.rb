@@ -3,6 +3,9 @@ require File.expand_path(File.dirname(__FILE__) + '/support/database_setup')
 
 class Post < ActiveRecord::Base
   serialize :data, ActiveRecord::Coders::JSON.new(symbolize_keys: true)
+
+  # For Rails 3.2.x the json serializer should be explicitly specified, because it is unknown by Rails
+  serialize :old_data, ActiveRecord::Coders::JSON.new(symbolize_keys: true) unless ActiveRecord.respond_to?(:version)
 end
 
 class PostQuestions < ActiveRecord::Base
@@ -74,5 +77,32 @@ describe 'ActiverecordPostgresJson', db: true do
 
   it 'when search in objects array' do
     expect(Post.where('data @> \'[{"f1":6}]\'').count).to eq(1)
+  end
+
+  context 'when the column is of json type' do
+    let!(:plain_json) do
+      Post.create!(data: { title: 'Plain JSON support'},
+                   old_data: { title: 'Old JSON is supported too',
+                               author: { name: 'Aurel', email: 'aurel@example.com'},
+                               draft:  true }).reload
+    end
+
+    it 'process plain JSON columns, ' do
+      post = Post.all.to_a[4]
+
+      # Rails 4.0.x and 4.1.x will serialize plain json fields without symbolizing keys with their own serializer
+      if ActiveRecord.respond_to?(:version)
+        if ::ActiveRecord.version >= Gem::Version.new('4.0.0') && ::ActiveRecord.version < Gem::Version.new('4.2.0')
+            expect(post.old_data).to eq({ 'title' => 'Old JSON is supported too',
+                                          'author' => { 'name' => 'Aurel', 'email' => 'aurel@example.com'},
+                                          'draft' => true })
+        end
+        # Rails 3.2.x will serialize plain json fields symbolizing keys using this gem
+      elsif ActiveRecord::VERSION::MAJOR == 3 && ActiveRecord::VERSION::MINOR == 2
+          expect(post.old_data).to eq({ title: 'Old JSON is supported too',
+                                        author: { name: 'Aurel', email: 'aurel@example.com'},
+                                        draft: true })
+      end
+    end
   end
 end
